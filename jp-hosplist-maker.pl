@@ -72,11 +72,17 @@ while ( $line =<RECE> ){
 					$line=~s/全医療機関出力//g;
 					$line=~s/届出受理医療機関名簿//g;
 
+		if ( $line=~/都道府県の境目/ ){
+		$firstck=0;
+		$line="";
+		}
+
 
 		if ( $line=~/\[/ ) {
 		$row11=$line;
 		$row11=~s/\[//g;
 		$row11=~s/\]//g;
+		$row11=~s/  /\t/;
 		$row11=~s/ //g;
 		$row11=~s/現在//g;
 		$row11=~s/　/\t/;
@@ -98,7 +104,6 @@ while ( $line =<RECE> ){
 
 			if ($firstck eq 1){
 				if ($row12 eq '') { $row12=@data1[1];}
-#				$row12=@data1[1];
 				print REC $row1."\t".@data1[0]."\t".$row12."\t".$row0."\t".$row2."\t".$row3."\t".$row4."\t".$row5."\t".$row7."\t".$row6."\n";
 
 				$row7=~s/　{1,}/ /g;
@@ -192,7 +197,8 @@ while ( $line =<RECE> ){
 								{$row0="00"}
 		$firstck=1;
 		$row4=$data[3];
-			$row4=~s/〒//g;
+		$row4=~s/〒//g;
+		$row12=@data1[1];
 					} 
 
 ## 医療機関コードを都道府県番号付きに変更
